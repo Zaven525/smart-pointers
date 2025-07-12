@@ -16,7 +16,10 @@ public:
         }
         return *this;
     }
-    ~UniquePtr() { release(); }
+    ~UniquePtr() { 
+        delete _data; 
+        _data = nullptr; 
+    }
 
     T* release() {
         T *tmp = _data;
@@ -53,6 +56,87 @@ public:
         return _data;
     }
 
+    friend bool operator==(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) == *(rhs._data);
+    }
+
+    friend bool operator==(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) == rhs;
+    }
+
+    friend bool operator==(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) == *rhs;
+    }
+
+    friend bool operator!=(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) != *(rhs._data);
+    }
+
+    friend bool operator!=(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) != rhs;
+    }
+
+    friend bool operator!=(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) != *rhs;
+    }
+
+    friend bool operator>(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) > *(rhs._data);
+    }
+
+    friend bool operator>(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) > rhs;
+    }
+
+    friend bool operator>(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) > *rhs;
+    }
+
+    friend bool operator>=(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) >= *(rhs._data);
+    }
+
+    friend bool operator>=(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) >= rhs;
+    }
+
+    friend bool operator>=(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) >= *rhs;
+    }
+
+    friend bool operator<(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) < *(rhs._data);
+    }
+
+    friend bool operator<(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) < rhs;
+    }
+
+    friend bool operator<(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) < *rhs;
+    }
+
+    friend bool operator<=(const UniquePtr<T> &lhs, const UniquePtr<T> &rhs){
+        return *(lhs._data) <= *(rhs._data);
+    }
+
+    friend bool operator<=(const UniquePtr<T> &lhs, const T &rhs){
+        return *(lhs._data) <= rhs;
+    }
+
+    friend bool operator<=(const UniquePtr<T> &lhs, const T *rhs) {
+        return *(lhs._data) <= *rhs;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const UniquePtr& uptr) {
+        os << *(uptr.get());
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, const UniquePtr& uptr) {
+        is >> *(uptr.get()) ;
+        return is;
+    }
 
 private:
     T *_data;
@@ -61,19 +145,9 @@ private:
 
 int main() {
     UniquePtr<int> a(new int(4));
-    if (a) std::cout << "a = " << *a.get() << std::endl;
-
-    UniquePtr b(new int(3));
-    std::cout << "b = " << *b.get() << std::endl;
-
-    int *p = a.release();
-    std::cout << "p = " << *p << std::endl;
-
-    b.reset(p);
-    std::cout << "b = " << *b.get() << std::endl;
-
-
-
+    int *b = new int(3);
+    std::cin >> a;
+    std::cout << (a == 3) << std::endl;
     return 0;
 }
 // template<typename T>
